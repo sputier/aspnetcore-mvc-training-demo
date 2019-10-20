@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MvcDemo.Data;
+using MvcDemo.Data.Repositories;
 using MvcDemo.Middlewares.RequestTimeLogging;
 
 namespace MvcDemo
@@ -45,6 +46,8 @@ namespace MvcDemo
                                                     });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
