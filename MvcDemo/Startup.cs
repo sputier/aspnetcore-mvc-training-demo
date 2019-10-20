@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MvcDemo.Data;
 using MvcDemo.Middlewares.RequestTimeLogging;
 
 namespace MvcDemo
@@ -32,6 +34,15 @@ namespace MvcDemo
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<MvcDemoDbContext>((sp, options) =>
+                                                    {
+                                                        options.UseInMemoryDatabase("MvcDemoDatabase");
+#if DEBUG
+                                                        // Permet d'obtenir des informations complémentaires en phase de debug
+                                                        // (notamment dans les descriptions d'exception)
+                                                        options.EnableSensitiveDataLogging();
+#endif 
+                                                    });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
